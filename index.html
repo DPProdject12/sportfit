@@ -1,0 +1,4030 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fight Shop KMW — экипировка и товары для единоборств</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Все оригинальные стили остаются без изменений */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            direction: ltr;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Шапка */
+        header {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .logo p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .cart-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        #cart-toggle {
+            background: white;
+            color: #1a2980;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        #cart-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #cart-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        #cart-total-delivery {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Основной контент */
+        main {
+            display: flex;
+            gap: 30px;
+            padding: 30px 0;
+            position: relative;
+        }
+
+        .products-section {
+            flex: 1;
+        }
+
+        .products-section h2 {
+            margin-bottom: 20px;
+            color: #1a2980;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #1a2980;
+            color: white;
+            border-color: #1a2980;
+        }
+
+        /* НОВЫЕ СТИЛИ ДЛЯ ФИЛЬТРАЦИИ ПО ПОЛУ И РАЗМЕРАМ */
+        .advanced-filters {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .advanced-filters h3 {
+            margin-bottom: 15px;
+            color: #1a2980;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gender-filter, .size-filter {
+            margin-bottom: 15px;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .gender-options, .size-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .gender-option, .size-option {
+            padding: 6px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .gender-option.active,
+        .size-option.active,
+        .gender-option:hover,
+        .size-option:hover {
+            background: #1a2980;
+            color: white;
+            border-color: #1a2980;
+        }
+
+        .gender-option i {
+            margin-right: 5px;
+        }
+
+        .size-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .size-option.disabled:hover {
+            background: #f8f9fa;
+            color: #333;
+            border-color: #e0e0e0;
+        }
+
+        /* Стили для отображения размеров в карточке товара */
+        .product-sizes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .size-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #e9f5ff;
+            color: #1a2980;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .size-tag.unavailable {
+            background: #f0f0f0;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .product-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .gender-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .gender-badge.men {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .gender-badge.women {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .gender-badge.unisex {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: #e9f5ff;
+            color: #1a2980;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1a2980;
+        }
+
+        .add-to-cart {
+            background: #1a2980;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .add-to-cart:hover {
+            background: #152063;
+        }
+
+        /* Боковая панель корзины */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1a2980;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            line-height: 1;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 3px;
+        }
+
+        .cart-item-price {
+            color: #1a2980;
+            font-weight: bold;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: #f0f0f0;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-item {
+            background: #ff4757;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ДЛЯ ВЫБОРА РАЗМЕРА ПРИ ДОБАВЛЕНИИ В КОРЗИНУ */
+        .size-selection {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .size-selection label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .size-selection-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .size-selection-btn {
+            padding: 5px 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .size-selection-btn.selected {
+            background: #1a2980;
+            color: white;
+            border-color: #1a2980;
+        }
+
+        .size-selection-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #888;
+            padding: 40px 20px;
+        }
+
+        .cart-summary {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .summary-row.delivery-row {
+            display: none; /* По умолчанию скрываем для самовывоза */
+        }
+
+        .summary-row.total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Стили для выбора получения */
+        .receive-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .receive-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .receive-option:hover {
+            border-color: #1a2980;
+            background: #f8f9ff;
+        }
+
+        .receive-option.selected {
+            border-color: #1a2980;
+            background: #e9f5ff;
+        }
+
+        .receive-icon {
+            font-size: 20px;
+            color: #1a2980;
+            width: 30px;
+            text-align: center;
+        }
+
+        .receive-info {
+            flex: 1;
+        }
+
+        .receive-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .receive-description {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .receive-radio {
+            display: none;
+        }
+
+        .store-info {
+            margin: 10px 0;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1a2980;
+            font-size: 0.9rem;
+        }
+
+        .store-info h5 {
+            margin-bottom: 5px;
+            color: #1a2980;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Стили для способов оплаты */
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .payment-method:hover {
+            border-color: #1a2980;
+            background: #f8f9ff;
+        }
+
+        .payment-method.selected {
+            border-color: #1a2980;
+            background: #e9f5ff;
+        }
+
+        .payment-icon {
+            font-size: 20px;
+            color: #1a2980;
+            width: 30px;
+            text-align: center;
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-title {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .payment-description {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .payment-radio {
+            display: none;
+        }
+
+        .checkout-form {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .checkout-form h4 {
+            margin-bottom: 15px;
+            color: #1a2980;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkout-trigger {
+            width: 100%;
+            padding: 14px 16px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: opacity 0.25s, transform 0.25s;
+            margin-top: 18px;
+        }
+
+        .checkout-trigger:hover {
+            transform: translateY(-1px);
+        }
+
+        .checkout-trigger:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .checkout-details {
+            display: none;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid #e9edf5;
+        }
+
+        .checkout-details.active {
+            display: block;
+        }
+
+        .cart-view.hidden {
+            display: none;
+        }
+
+        .checkout-back-btn {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d9dee8;
+            border-radius: 10px;
+            background: #f5f7fb;
+            color: #1a2980;
+            font-size: 0.98rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 12px;
+            transition: background 0.25s, transform 0.25s;
+        }
+
+        .checkout-back-btn:hover {
+            background: #eef2f8;
+            transform: translateY(-1px);
+        }
+
+        .checkout-back-btn.active {
+            display: flex;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1a2980;
+        }
+
+        /* Поле адреса доставки */
+        .address-group {
+            margin-top: 10px;
+            display: none;
+        }
+
+        .address-group.visible {
+            display: block;
+        }
+
+        /* Остальные стили без изменений */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        /* Уведомления */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1001;
+            animation: slideIn 0.3s;
+            max-width: 400px;
+        }
+
+        .notification.error {
+            background: #ff4757;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Модальное окно с чеком */
+        .receipt-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .receipt-modal.active {
+            display: flex;
+        }
+
+        .receipt-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-receipt {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .receipt-title {
+            text-align: center;
+            color: #1a2980;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #1a2980;
+            padding-bottom: 10px;
+        }
+
+        .receipt-details {
+            margin-bottom: 20px;
+        }
+
+        .receipt-items {
+            margin: 20px 0;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .receipt-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #1a2980;
+        }
+
+        .receipt-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-receipt {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-print {
+            background: #1a2980;
+            color: white;
+        }
+
+        .btn-close-modal {
+            background: #666;
+            color: white;
+        }
+
+        /* Подвал */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+
+        /* Модальное окно подтверждения удаления */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2001;
+        }
+
+        .confirm-modal.active {
+            display: flex;
+        }
+
+        .confirm-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-confirm {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-confirm-yes {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-confirm-no {
+            background: #666;
+            color: white;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            main {
+                flex-direction: column;
+            }
+            
+            .receipt-actions,
+            .confirm-actions {
+                flex-direction: column;
+            }
+            
+            .payment-method {
+                padding: 10px;
+            }
+            
+            .cart-info {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 5px;
+            }
+            
+            .receive-option,
+            .payment-method {
+                padding: 12px;
+            }
+            
+            .gender-options,
+            .size-options {
+                justify-content: center;
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+
+            header .container {
+                gap: 16px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Индикатор загрузки */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1a2980;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error {
+            border-color: #ff4757 !important;
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .search-box, .sort-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 12px 14px;
+        }
+
+        .search-box label, .sort-box label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1a2980;
+        }
+
+        .search-box input, .sort-box select {
+            width: 100%;
+            border: 1px solid #d9dee8;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font: inherit;
+        }
+
+        .filters-toggle {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #1a2980;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .filters-panel {
+            margin-top: 15px;
+        }
+
+        .advanced-filters.collapsed .filters-panel {
+            display: none;
+        }
+
+        .advanced-filters.collapsed {
+            padding-bottom: 12px;
+        }
+
+        .filters-toggle i:last-child {
+            transition: transform 0.3s;
+        }
+
+        .advanced-filters:not(.collapsed) .filters-toggle i:last-child {
+            transform: rotate(180deg);
+        }
+
+        .product-image {
+            position: relative;
+            height: 220px;
+            background: #eef2f7;
+            overflow: hidden;
+            font-size: 0;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.15), transparent 45%);
+            pointer-events: none;
+        }
+
+        .add-to-cart.in-cart {
+            background: #1f8b4c;
+        }
+
+        .add-to-cart:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .shop-note {
+            background: white;
+            margin-bottom: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 14px 16px;
+            color: #4d5b75;
+            font-size: 0.95rem;
+        }
+
+    
+        .header-tools {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        .header-action {
+            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.14);
+            color: white;
+            border-radius: 999px;
+            padding: 10px 14px;
+            cursor: pointer;
+            transition: transform 0.25s, background 0.25s, border-color 0.25s;
+            font-weight: 600;
+        }
+        .header-action:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.65);
+        }
+        .hero-banner {
+            background: linear-gradient(135deg, #0f172a, #1a2980 55%, #26d0ce);
+            color: white;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 16px 35px rgba(26,41,128,0.18);
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        .hero-banner h3 {
+            font-size: 1.9rem;
+            margin-bottom: 10px;
+        }
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .hero-pill {
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+        }
+        .hero-countdown {
+            background: rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 18px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.22);
+        }
+        .timer {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+        .breadcrumbs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: #60708c;
+            font-size: 0.92rem;
+        }
+        .breadcrumbs span {
+            background: #eef3fb;
+            color: #36507c;
+            padding: 6px 10px;
+            border-radius: 999px;
+        }
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr 0.9fr 0.9fr;
+            gap: 14px;
+            align-items: end;
+        }
+        .price-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .price-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d9dee8;
+            border-radius: 8px;
+            font: inherit;
+        }
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .section-head h3 {
+            color: #1a2980;
+        }
+        .muted-note {
+            color: #6a7385;
+            font-size: 0.92rem;
+        }
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin: 18px 0 28px;
+        }
+        .popular-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(20,34,70,0.08);
+            transition: transform 0.25s, box-shadow 0.25s;
+            border: 1px solid #edf1f7;
+        }
+        .popular-card:hover, .product-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 16px 32px rgba(20,34,70,0.14);
+        }
+        .popular-card img, .product-image img, .quick-view-image img, .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .popular-image {
+            height: 180px;
+            position: relative;
+        }
+        .popular-body {
+            padding: 16px;
+        }
+        .badge-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .mini-badge {
+            font-size: 0.75rem;
+            padding: 5px 8px;
+            border-radius: 999px;
+            background: #eef3fb;
+            color: #274168;
+            font-weight: 700;
+        }
+        .mini-badge.hot {
+            background: #fff3e0;
+            color: #c26a00;
+        }
+        .mini-badge.stock-ok {
+            background: #e8f7ec;
+            color: #1c7a36;
+        }
+        .mini-badge.stock-low {
+            background: #fff4e5;
+            color: #a06000;
+        }
+        .mini-badge.stock-empty {
+            background: #ffe9e9;
+            color: #b42318;
+        }
+        .product-card {
+            border: 1px solid #edf1f7;
+        }
+        .product-image {
+            position: relative;
+            height: 220px;
+            font-size: initial;
+            cursor: pointer;
+            background: #e9edf5;
+        }
+        .quick-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.92);
+            box-shadow: 0 8px 18px rgba(17,24,39,0.15);
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .icon-btn:hover {
+            transform: scale(1.07);
+            background: white;
+        }
+        .icon-btn.active {
+            color: #e11d48;
+        }
+        .quick-view-trigger {
+            position: absolute;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s, transform 0.25s;
+            background: rgba(15,23,42,0.84);
+            color: white;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .product-card:hover .quick-view-trigger {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(-2px);
+        }
+        .product-brand {
+            color: #70809d;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .stock-text {
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .stock-text.ok { color: #1c7a36; }
+        .stock-text.low { color: #a06000; }
+        .stock-text.empty { color: #b42318; }
+        .reviews-preview {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #5e6c84;
+            font-size: 0.9rem;
+        }
+        .stars {
+            color: #f59e0b;
+            letter-spacing: 1px;
+        }
+        .recommend-strip {
+            margin-top: 26px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(20,34,70,0.08);
+        }
+        .recommend-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 14px;
+        }
+        .recommend-card {
+            border: 1px solid #edf1f7;
+            border-radius: 14px;
+            padding: 14px;
+            background: #fafcff;
+        }
+        .map-section {
+            margin-top: 36px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 10px 24px rgba(20,34,70,0.08);
+            overflow: hidden;
+        }
+        .map-top {
+            padding: 22px 24px 10px;
+        }
+        .map-frame {
+            width: 100%;
+            height: 360px;
+            border: none;
+        }
+        .map-details {
+            padding: 18px 24px 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            color: #4f5f79;
+        }
+        .modal-shell {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.72);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2500;
+            padding: 20px;
+        }
+        .modal-shell.active {
+            display: flex;
+        }
+        .modal-panel {
+            background: white;
+            width: min(1080px, 96vw);
+            max-height: 92vh;
+            overflow: auto;
+            border-radius: 22px;
+            box-shadow: 0 24px 60px rgba(15,23,42,0.35);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 22px;
+            border-bottom: 1px solid #edf1f7;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 2;
+        }
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 24px;
+            padding: 22px;
+        }
+        .gallery-main {
+            height: 430px;
+            border-radius: 18px;
+            overflow: hidden;
+            background: #eef2f8;
+        }
+        .gallery-thumbs {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+        .gallery-thumb {
+            height: 82px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            background: #eef2f8;
+        }
+        .gallery-thumb.active {
+            border-color: #1a2980;
+        }
+        .quick-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .quick-price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a2980;
+            margin: 8px 0 12px;
+        }
+        .review-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .review-item {
+            padding: 14px;
+            border-radius: 14px;
+            background: #f8fbff;
+            border: 1px solid #e8eef7;
+        }
+        .promo-box {
+            margin: 18px 0 10px;
+            padding: 14px;
+            border-radius: 12px;
+            background: #f8fbff;
+            border: 1px dashed #9fb7da;
+        }
+        .promo-actions {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .promo-actions input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d9dee8;
+            border-radius: 8px;
+            font: inherit;
+        }
+        .promo-actions button, .secondary-btn, .primary-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 11px 14px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .primary-btn {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+        }
+        .secondary-btn {
+            background: #edf2fb;
+            color: #1a2980;
+        }
+        .empty-state {
+            text-align: center;
+            color: #6a7385;
+            padding: 30px 20px;
+        }
+        .auth-grid {
+            display: grid;
+            gap: 12px;
+            padding: 22px;
+        }
+        .auth-grid input {
+            padding: 12px;
+            border: 1px solid #d9dee8;
+            border-radius: 10px;
+            font: inherit;
+        }
+        .orders-list {
+            padding: 20px 22px 24px;
+            display: grid;
+            gap: 14px;
+        }
+        .order-card {
+            border: 1px solid #e7edf7;
+            border-radius: 16px;
+            padding: 16px;
+            background: #fafcff;
+        }
+        .order-card h4 {
+            color: #1a2980;
+            margin-bottom: 6px;
+        }
+        .modal-close {
+            border: none;
+            background: #eef2fb;
+            color: #1a2980;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .header-user {
+            font-size: 0.92rem;
+            opacity: 0.95;
+        }
+        .results-summary {
+            margin: 12px 0 18px;
+            color: #61718d;
+            font-size: 0.94rem;
+        }
+        @media (max-width: 980px) {
+            .toolbar, .hero-banner, .modal-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-tools {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+        @media (max-width: 768px) {
+            .modal-panel {
+                width: 100%;
+                border-radius: 18px;
+            }
+            .gallery-main {
+                height: 280px;
+            }
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+            .price-box {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+
+        /* === Финальная корректировка верстки === */
+        :root {
+            --bg-soft: #f4f7fb;
+            --card-border: #e7edf7;
+            --text-muted: #64748b;
+            --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
+            --shadow-hover: 0 18px 40px rgba(15, 23, 42, 0.14);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top, rgba(38,208,206,0.10), transparent 26%),
+                linear-gradient(180deg, #f8fbff 0%, var(--bg-soft) 100%);
+            min-width: 320px;
+        }
+
+        .container {
+            width: min(1240px, calc(100% - 32px));
+            padding: 0 16px;
+        }
+
+        header {
+            backdrop-filter: blur(8px);
+        }
+
+        header .container {
+            gap: 24px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        .logo {
+            min-width: 230px;
+        }
+
+        .logo h1 {
+            line-height: 1.15;
+        }
+
+        .header-tools {
+            gap: 10px;
+        }
+
+        .header-action,
+        #cart-toggle,
+        .filter-btn,
+        .gender-option,
+        .size-option,
+        .add-to-cart,
+        .quantity-btn,
+        .remove-item,
+        .btn-receipt,
+        .btn-confirm,
+        .primary-btn,
+        .secondary-btn,
+        .modal-close,
+        .close-cart,
+        .quick-view-trigger,
+        .icon-btn,
+        .filters-toggle {
+            transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, border-color 0.22s ease, color 0.22s ease, opacity 0.22s ease;
+        }
+
+        .header-action:hover,
+        #cart-toggle:hover,
+        .filter-btn:hover,
+        .gender-option:hover,
+        .size-option:hover,
+        .add-to-cart:hover,
+        .btn-receipt:hover,
+        .btn-confirm:hover,
+        .primary-btn:hover,
+        .secondary-btn:hover,
+        .modal-close:hover,
+        .icon-btn:hover {
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid rgba(38,208,206,0.28);
+            outline-offset: 2px;
+        }
+
+        main {
+            align-items: flex-start;
+            padding-top: 34px;
+            padding-bottom: 12px;
+        }
+
+        .products-section,
+        .recommend-strip,
+        .map-section {
+            min-width: 0;
+        }
+
+        .breadcrumbs {
+            margin-bottom: 18px;
+        }
+
+        .hero-banner,
+        .advanced-filters,
+        .search-box,
+        .sort-box,
+        .shop-note,
+        .recommend-strip,
+        .map-section,
+        .popular-card,
+        .product-card,
+        .modal-panel,
+        .receipt-content,
+        .confirm-content,
+        .cart-sidebar {
+            box-shadow: var(--shadow-soft);
+        }
+
+        .hero-banner {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: auto -12% -35% auto;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .hero-banner p {
+            max-width: 760px;
+            color: rgba(255,255,255,0.92);
+        }
+
+        .toolbar,
+        .products-grid,
+        .popular-grid,
+        .recommend-list,
+        .map-details {
+            min-width: 0;
+        }
+
+        .search-box,
+        .sort-box,
+        .advanced-filters,
+        .shop-note,
+        .store-info,
+        .recommend-card,
+        .order-card {
+            border: 1px solid var(--card-border);
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            align-items: stretch;
+        }
+
+        .product-card,
+        .popular-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-info,
+        .popular-body {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .product-title {
+            line-height: 1.35;
+        }
+
+        .product-description {
+            flex: 1;
+        }
+
+        .product-footer {
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .product-price {
+            white-space: nowrap;
+        }
+
+        .add-to-cart {
+            min-height: 42px;
+            font-weight: 700;
+            box-shadow: 0 8px 18px rgba(26,41,128,0.16);
+        }
+
+        .quick-view-trigger {
+            box-shadow: 0 8px 20px rgba(15,23,42,0.25);
+        }
+
+        .cart-sidebar {
+            border-left: 1px solid var(--card-border);
+        }
+
+        .cart-item {
+            align-items: flex-start;
+        }
+
+        .cart-item-image {
+            flex: 0 0 64px;
+            overflow: hidden;
+            background: #eef2f8;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cart-summary,
+        .checkout-form,
+        .cart-header {
+            background: #fff;
+        }
+
+        .summary-row.total {
+            color: #0f172a;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .search-box input,
+        .sort-box select,
+        .price-box input,
+        .auth-grid input,
+        .promo-actions input {
+            background: #fff;
+            border: 1px solid #d8e1ee;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 84px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            box-shadow: 0 14px 28px rgba(26,41,128,0.18);
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            opacity: 0.96;
+        }
+
+        .modal-header h3,
+        .checkout-form h4,
+        .cart-header h3,
+        .section-head h3 {
+            line-height: 1.25;
+        }
+
+        .modal-panel {
+            border: 1px solid var(--card-border);
+        }
+
+        .map-frame {
+            background: #eef2f8;
+        }
+
+        footer {
+            margin-top: 42px;
+            background: linear-gradient(135deg, #172033, #24334d);
+        }
+
+        .notification {
+            border-radius: 14px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #bfd0e4;
+            border-radius: 999px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        @media (max-width: 1180px) {
+            .toolbar {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 980px) {
+            header .container {
+                align-items: flex-start;
+            }
+
+            .header-tools {
+                justify-content: flex-start;
+            }
+
+            .hero-banner {
+                padding: 22px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: min(100% - 20px, 1240px);
+                padding: 0 10px;
+            }
+
+            header .container {
+                flex-direction: column;
+            }
+
+            .header-tools {
+                width: 100%;
+            }
+
+            .hero-banner h3 {
+                font-size: 1.55rem;
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .product-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .add-to-cart {
+                justify-content: center;
+            }
+
+            .receipt-content,
+            .confirm-content,
+            .modal-panel {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+        }
+
+    
+        .gallery-thumbs { display: none !important; }
+        .cart-item { align-items: flex-start; }
+        .cart-item-image { overflow: hidden; flex-shrink: 0; }
+        .cart-item-title { line-height: 1.25; }
+
+
+        .cart-sidebar {
+            overflow: hidden;
+        }
+
+        .cart-items {
+            min-height: 0;
+            padding: 16px 18px;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 64px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+        }
+
+        .cart-item-image {
+            width: 64px;
+            height: 64px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #eef2f8;
+            flex: 0 0 64px;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cart-item-info {
+            min-width: 0;
+        }
+
+        .cart-item-title {
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            color: #1f2937;
+            word-break: break-word;
+        }
+
+        .cart-item-details {
+            font-size: 0.84rem;
+            color: #6b7280;
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+
+        .cart-item-price {
+            margin-top: 6px;
+            color: #1a2980;
+            font-weight: 700;
+        }
+
+        .cart-item-controls {
+            display: grid;
+            grid-auto-flow: column;
+            align-items: center;
+            gap: 8px;
+            justify-content: end;
+        }
+
+        .cart-item-controls span {
+            min-width: 18px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .quantity-btn,
+        .remove-item {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .cart-summary,
+        .checkout-form,
+        .cart-header {
+            flex-shrink: 0;
+        }
+
+</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-dumbbell"></i> Fight Shop KMW</h1>
+                <p>Экипировка, одежда и аксессуары для спорта и единоборств</p>
+            </div>
+            <div class="header-tools">
+                <div class="header-user" id="header-user">Гость</div>
+                <button class="header-action" id="auth-open"><i class="fas fa-user"></i> Войти</button>
+                <button class="header-action" id="orders-open"><i class="fas fa-receipt"></i> Заказы</button>
+                <button class="header-action" id="logout-btn" style="display:none"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                <button class="header-action" type="button"><i class="fas fa-heart"></i> Избранное <span id="wishlist-count">0</span></button>
+                <div class="cart-info">
+                    <button id="cart-toggle">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                    </button>
+                    <div>
+                        <span id="cart-total">0 ₽</span>
+                        <span id="cart-total-delivery">без доставки</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="products-section">
+            <div class="breadcrumbs" id="breadcrumbs"></div>
+            <div class="hero-banner">
+                <div>
+                    <h3>Fight Shop KMW — экипировка для бокса, ММА, борьбы и функционального тренинга</h3>
+                    <p>Сайт получил расширенный функционал: умный поиск, фильтры по цене, избранное, отзывы, наличие, промокоды, личный профиль, история заказов, быстрый просмотр, рекомендации, хиты продаж, таймер акции, PDF-чек и карта магазина.</p>
+                    <div class="hero-meta">
+                        <span class="hero-pill"><i class="fas fa-map-marker-alt"></i> Пятигорск, Ессентукская улица, 29Б</span>
+                        <span class="hero-pill"><i class="fas fa-credit-card"></i> Наличные, карта, QR, СБП</span>
+                        <span class="hero-pill"><i class="fas fa-store"></i> Самовывоз и доставка</span>
+                    </div>
+                </div>
+                <div class="hero-countdown">
+                    <div>Акция Fight Week</div>
+                    <div class="timer" id="deal-timer">00д 00:00:00</div>
+                    <div style="margin-top:8px">Промокоды: <strong>FIGHT10</strong>, <strong>SPORT20</strong>, <strong>KMW500</strong></div>
+                </div>
+            </div>
+            <h2><i class="fas fa-medal"></i> Каталог товаров</h2>
+            <div class="section-head">
+                <h3>Хиты продаж</h3>
+                <div class="muted-note">Самые популярные позиции магазина</div>
+            </div>
+            <div class="popular-grid" id="popular-products"></div>
+            
+            <div class="shop-note">
+                Магазин Fight Shop KMW в Пятигорске работает по адресу Ессентукская улица, 29Б. По данным карточки организации, магазин открыт до 20:00 и принимает оплату наличными, картой, QR и через СБП.
+            </div>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <label for="product-search"><i class="fas fa-search"></i> Поиск по каталогу</label>
+                    <input type="text" id="product-search" placeholder="Например: перчатки, кроссовки, толстовка">
+                </div>
+                <div class="sort-box">
+                    <label for="sort-select"><i class="fas fa-sort"></i> Сортировка</label>
+                    <select id="sort-select">
+                        <option value="default">По умолчанию</option>
+                        <option value="price-asc">Сначала дешевле</option>
+                        <option value="price-desc">Сначала дороже</option>
+                        <option value="name-asc">По названию А-Я</option>
+                        <option value="popular">Сначала хиты продаж</option>
+                    </select>
+                </div>
+                <div class="sort-box">
+                    <label><i class="fas fa-tag"></i> Цена, ₽</label>
+                    <div class="price-box">
+                        <input type="number" id="min-price" placeholder="от">
+                        <input type="number" id="max-price" placeholder="до">
+                    </div>
+                </div>
+
+            </div>
+            <div class="results-summary" id="results-summary">Найдено товаров: 0</div>
+
+            <!-- Базовые фильтры по категориям -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Все товары</button>
+                <button class="filter-btn" data-filter="shoes">Обувь</button>
+                <button class="filter-btn" data-filter="clothing">Одежда</button>
+                <button class="filter-btn" data-filter="accessories">Аксессуары</button>
+            </div>
+            
+            <!-- РАСШИРЕННЫЕ ФИЛЬТРЫ -->
+            <div class="advanced-filters collapsed" id="advanced-filters">
+                <button class="filters-toggle" type="button" id="filters-toggle">
+                    <span><i class="fas fa-filter"></i> Расширенные фильтры</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="filters-panel">
+                
+                <!-- Фильтр по полу -->
+                <div class="gender-filter">
+                    <div class="filter-title"><i class="fas fa-venus-mars"></i> Пол</div>
+                    <div class="gender-options">
+                        <div class="gender-option active" data-gender="all">Все</div>
+                        <div class="gender-option" data-gender="men">
+                            <i class="fas fa-male"></i> Мужское
+                        </div>
+                        <div class="gender-option" data-gender="women">
+                            <i class="fas fa-female"></i> Женское
+                        </div>
+                        <div class="gender-option" data-gender="unisex">Унисекс</div>
+                    </div>
+                </div>
+                
+                <!-- Фильтр по размерам -->
+                <div class="size-filter">
+                    <div class="filter-title"><i class="fas fa-ruler"></i> Размер</div>
+                    <div class="size-options" id="size-options">
+                        <!-- Размеры будут динамически загружаться -->
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+            <!-- Контейнер товаров -->
+            <div class="products-grid" id="products-container">
+                <!-- Товары загружаются через JavaScript -->
+            </div>
+        </section>
+
+        <aside class="cart-sidebar" id="cart-sidebar">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-basket"></i> Корзина</h3>
+                <button class="close-cart" id="close-cart">&times;</button>
+            </div>
+            
+            <div class="cart-view" id="cart-view">
+                <div class="cart-items" id="cart-items">
+                    <p class="empty-cart">Корзина пуста</p>
+                </div>
+
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Товары:</span>
+                        <span id="cart-subtotal">0 ₽</span>
+                    </div>
+                    <div class="summary-row delivery-row">
+                        <span>Доставка:</span>
+                        <span id="cart-delivery-cost">0 ₽</span>
+                    </div>
+                    <div class="summary-row" id="promo-summary-row" style="display:none">
+                        <span>Скидка:</span>
+                        <span id="promo-discount-amount">0 ₽</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Итого к оплате:</span>
+                        <span id="cart-summary-total">0 ₽</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="checkout-form">
+                <button type="button" class="checkout-trigger" id="checkout-trigger" disabled>
+                    <i class="fas fa-arrow-right"></i> Перейти к оформлению
+                </button>
+                <button type="button" class="checkout-back-btn" id="checkout-back-btn">
+                    <i class="fas fa-arrow-left"></i> Назад к корзине
+                </button>
+
+                <div class="checkout-details" id="checkout-details">
+                    <h4><i class="fas fa-file-invoice"></i> Оформление заказа</h4>
+                    
+                    <!-- ВЫБОР СПОСОБА ПОЛУЧЕНИЯ -->
+                    <div class="receive-methods">
+                        <label class="receive-option selected" for="receive-store">
+                            <input type="radio" id="receive-store" name="receive-method" value="store" class="receive-radio" checked>
+                            <div class="receive-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="receive-info">
+                                <div class="receive-title">В магазине (самовывоз)</div>
+                                <div class="receive-description">Бесплатно. Заберите заказ в удобное время</div>
+                            </div>
+                        </label>
+                        
+                        <label class="receive-option" for="receive-delivery">
+                            <input type="radio" id="receive-delivery" name="receive-method" value="delivery" class="receive-radio">
+                            <div class="receive-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="receive-info">
+                                <div class="receive-title">Доставка курьером</div>
+                                <div class="receive-description">300 ₽ (бесплатно от 5000 ₽). 1-3 рабочих дня</div>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <!-- Информация о магазине -->
+                    <div class="store-info">
+                        <h5><i class="fas fa-map-marker-alt"></i> Магазин Fight Shop KMW</h5>
+                        <p><strong>Адрес:</strong> г. Пятигорск, Ессентукская улица, 29Б</p>
+                        <p><strong>Телефон:</strong> +7 (961) 444-29-99</p>
+                        <p><strong>Режим работы:</strong> открыто до 20:00</p>
+                        <p><strong>Оплата:</strong> наличными, картой, QR, СБП</p>
+                    </div>
+                    
+                    <!-- Поле адреса доставки -->
+                    <div id="address-group" class="form-group address-group">
+                        <label for="delivery-address"><i class="fas fa-home"></i> Адрес доставки *</label>
+                        <input type="text" id="delivery-address" placeholder="г. Москва, ул. Примерная, д. 1, кв. 1">
+                        <div class="error-message" id="address-error"></div>
+                    </div>
+                    
+                    <form id="order-form">
+                        <div class="form-group">
+                            <label for="customer-name"><i class="fas fa-user"></i> Фамилия и Имя *</label>
+                            <input type="text" id="customer-name" required placeholder="Иванов Иван">
+                            <div class="error-message" id="name-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="customer-phone"><i class="fas fa-phone"></i> Телефон *</label>
+                            <input type="tel" id="customer-phone" required placeholder="+7 (999) 123-45-67">
+                            <div class="error-message" id="phone-error"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="customer-email"><i class="fas fa-envelope"></i> Email (опционально)</label>
+                            <input type="email" id="customer-email" placeholder="ivanov@example.com">
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+                        
+                        <!-- ВЫБОР СПОСОБА ОПЛАТЫ -->
+                        <div class="payment-methods">
+                            <label class="payment-method selected" for="payment-cash">
+                                <input type="radio" id="payment-cash" name="payment-method" value="cash" class="payment-radio" checked>
+                                <div class="payment-icon">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Наличными</div>
+                                    <div class="payment-description" id="cash-description">При получении в магазине</div>
+                                </div>
+                            </label>
+                            
+                            <label class="payment-method" for="payment-card">
+                                <input type="radio" id="payment-card" name="payment-method" value="card" class="payment-radio">
+                                <div class="payment-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="payment-info">
+                                    <div class="payment-title">Картой при получении</div>
+                                    <div class="payment-description" id="card-description">В магазине при получении</div>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="order-comment"><i class="fas fa-comment"></i> Комментарий к заказу</label>
+                            <textarea id="order-comment" rows="2" placeholder="Дополнительные пожелания, удобное время получения и т.д."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-checkout">
+                            <i class="fas fa-file-invoice-dollar"></i> Оформить заказ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </aside>
+        
+        <div class="cart-overlay" id="cart-overlay"></div>
+    </main>
+
+    <!-- Модальное окно с чеком -->
+    <div class="receipt-modal" id="receipt-modal">
+        <div class="receipt-content">
+            <button class="close-receipt" id="close-receipt">&times;</button>
+            <h2 class="receipt-title" id="receipt-title">Чек заказа</h2>
+            <div class="receipt-details" id="receipt-details">
+                <!-- Данные чека -->
+            </div>
+            <div class="receipt-actions">
+                <button class="btn-receipt btn-print" id="print-receipt">
+                    <i class="fas fa-print"></i> Печать
+                </button>
+                <button class="btn-receipt btn-print" id="download-receipt">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn-receipt btn-close-modal" id="close-receipt-btn">
+                    <i class="fas fa-times"></i> Закрыть
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="confirm-modal" id="confirm-modal">
+        <div class="confirm-content">
+            <h3 style="margin-bottom: 15px; color: #1a2980;">Подтверждение удаления</h3>
+            <p id="confirm-message">Вы действительно хотите удалить товар из корзины?</p>
+            <div class="confirm-actions">
+                <button class="btn-confirm btn-confirm-yes" id="confirm-yes">Да, удалить</button>
+                <button class="btn-confirm btn-confirm-no" id="confirm-no">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal-shell" id="quick-view-modal">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h3>Карточка товара</h3>
+                <button class="modal-close" data-close-modal="quick-view-modal">&times;</button>
+            </div>
+            <div id="quick-view-body"></div>
+        </div>
+    </div>
+
+    <div class="modal-shell" id="auth-modal">
+        <div class="modal-panel" style="max-width:520px">
+            <div class="modal-header">
+                <h3>Профиль покупателя</h3>
+                <button class="modal-close" data-close-modal="auth-modal">&times;</button>
+            </div>
+            <div class="auth-grid">
+                <input type="text" id="auth-name" placeholder="Имя и фамилия">
+                <input type="tel" id="auth-phone" placeholder="+7 (___) ___-__-__">
+                <input type="email" id="auth-email" placeholder="email@example.com">
+                <button class="primary-btn" id="auth-save">Сохранить профиль</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-shell" id="orders-modal">
+        <div class="modal-panel" style="max-width:760px">
+            <div class="modal-header">
+                <h3>История заказов</h3>
+                <button class="modal-close" data-close-modal="orders-modal">&times;</button>
+            </div>
+            <div class="orders-list" id="orders-list"></div>
+        </div>
+    </div>
+
+    <section class="map-section container">
+        <div class="map-top">
+            <div class="section-head">
+                <h3>Как нас найти</h3>
+                <div class="muted-note">Fight Shop KMW · Пятигорск · самовывоз и консультация в магазине</div>
+            </div>
+        </div>
+        <iframe class="map-frame" src="https://yandex.ru/map-widget/v1/?ll=43.035079%2C44.047448&mode=search&oid=49266994652&ol=biz&z=17.05"></iframe>
+        <div class="map-details">
+            <div><strong>Адрес</strong><br>г. Пятигорск, Ессентукская улица, 29Б</div>
+            <div><strong>Телефон</strong><br>+7 (961) 444-29-99</div>
+            <div><strong>Формат работы</strong><br>Самовывоз, доставка, подбор экипировки</div>
+            <div><strong>Оплата</strong><br>Наличные, карта, QR, СБП</div>
+        </div>
+    </section>
+
+    <section class="container recommend-strip">
+        <div class="section-head">
+            <h3>Рекомендуем посмотреть</h3>
+            <div class="muted-note">Товары, которые чаще всего выбирают вместе</div>
+        </div>
+        <div class="recommend-list" id="recommend-list"></div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Fight Shop KMW. Все права защищены.</p>
+            <p>Адрес: г. Пятигорск, Ессентукская улица, 29Б | Телефон: +7 (961) 444-29-99</p>
+        </div>
+    </footer>
+
+    <div id="notification" class="notification"></div>
+    <div id="loader" class="loader"></div>
+
+    <script>
+
+        const products = [
+        {
+                "id": 1,
+                "name": "Боксерские перчатки Fight Shop Pro",
+                "brand": "Fight Shop KMW",
+                "category": "accessories",
+                "gender": "unisex",
+                "sizes": [
+                        "10 oz",
+                        "12 oz",
+                        "14 oz",
+                        "16 oz"
+                ],
+                "price": 6490,
+                "oldPrice": 7290,
+                "stock": 12,
+                "popular": true,
+                "rating": 4.9,
+                "description": "Плотная фиксация кисти и усиленная защита для бокса и работы на лапах.",
+                "reviews": [
+                        {
+                                "author": "Артём",
+                                "text": "Плотно сидят на руке, хорошо держат запястье и не дубеют после нагрузок."
+                        },
+                        {
+                                "author": "Марат",
+                                "text": "Брал для спаррингов, защита отличная и швы аккуратные."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/1.png"
+                        
+                ]
+        },
+        {
+                "id": 2,
+                "name": "Шорты для ММА Combat",
+                "brand": "Combat Series",
+                "category": "clothing",
+                "gender": "men",
+                "sizes": [
+                        "S",
+                        "M",
+                        "L",
+                        "XL"
+                ],
+                "price": 3890,
+                "stock": 8,
+                "popular": false,
+                "rating": 4.7,
+                "description": "Эластичные шорты для спаррингов и интенсивных тренировок без ограничения движений.",
+                "reviews": [
+                        {
+                                "author": "Руслан",
+                                "text": "Ткань тянется как надо, посадка удобная."
+                        },
+                        {
+                                "author": "Игорь",
+                                "text": "Для ММА и кроссфита отлично, не цепляются."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/5.jpg"
+                        
+                ]
+        },
+        {
+                "id": 3,
+                "name": "Компрессионная футболка Rashguard",
+                "brand": "RashLab",
+                "category": "clothing",
+                "gender": "unisex",
+                "sizes": [
+                        "S",
+                        "M",
+                        "L",
+                        "XL"
+                ],
+                "price": 3290,
+                "stock": 14,
+                "popular": true,
+                "rating": 4.8,
+                "description": "Быстро сохнет, плотно сидит и подходит для грэпплинга, ММА и функционального тренинга.",
+                "reviews": [
+                        {
+                                "author": "Егор",
+                                "text": "После стирки форма не теряется, сидит плотно."
+                        },
+                        {
+                                "author": "Денис",
+                                "text": "Отлично работает на ковре и в зале."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/2.jpeg"
+                       
+                ]
+        },
+        {
+                "id": 4,
+                "name": "Кроссовки для тренировок Rapid Move",
+                "brand": "Rapid Move",
+                "category": "shoes",
+                "gender": "men",
+                "sizes": [
+                        "40",
+                        "41",
+                        "42",
+                        "43",
+                        "44",
+                        "45"
+                ],
+                "price": 7990,
+                "oldPrice": 8590,
+                "stock": 5,
+                "popular": true,
+                "rating": 4.6,
+                "description": "Устойчивая подошва и хорошая амортизация для зала, кардио и ОФП.",
+                "reviews": [
+                        {
+                                "author": "Виталий",
+                                "text": "Для круговых тренировок подходят отлично."
+                        },
+                        {
+                                "author": "Никита",
+                                "text": "Подошва цепкая, стопа не гуляет."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/6.png"
+                       
+                ]
+        },
+        {
+                "id": 5,
+                "name": "Защита голени Kick Shield",
+                "brand": "Kick Shield",
+                "category": "accessories",
+                "gender": "unisex",
+                "sizes": [
+                        "S",
+                        "M",
+                        "L"
+                ],
+                "price": 4590,
+                "stock": 3,
+                "popular": false,
+                "rating": 4.7,
+                "description": "Легкая защита голени для кикбоксинга и муай-тай с плотной посадкой.",
+                "reviews": [
+                        {
+                                "author": "Тимур",
+                                "text": "Не сползает во время работы ногами."
+                        },
+                        {
+                                "author": "Аслан",
+                                "text": "Удобная фиксация, защита достаточная."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/7.jpg"
+                        
+                ]
+        },
+        {
+                "id": 6,
+                "name": "Женская худи Training Core",
+                "brand": "Training Core",
+                "category": "clothing",
+                "gender": "women",
+                "sizes": [
+                        "XS",
+                        "S",
+                        "M",
+                        "L"
+                ],
+                "price": 4290,
+                "stock": 9,
+                "popular": false,
+                "rating": 4.5,
+                "description": "Мягкая худи для зала и повседневной носки после тренировки.",
+                "reviews": [
+                        {
+                                "author": "Анна",
+                                "text": "Мягкая ткань, смотрится аккуратно."
+                        },
+                        {
+                                "author": "Мария",
+                                "text": "Подходит и для тренировки, и для города."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/8.jpg"
+                        
+                ]
+        },
+        {
+                "id": 7,
+                "name": "Женские кроссовки Power Step",
+                "brand": "Power Step",
+                "category": "shoes",
+                "gender": "women",
+                "sizes": [
+                        "36",
+                        "37",
+                        "38",
+                        "39",
+                        "40"
+                ],
+                "price": 8490,
+                "stock": 4,
+                "popular": true,
+                "rating": 4.8,
+                "description": "Легкие тренировочные кроссовки с поддержкой стопы и цепкой подошвой.",
+                "reviews": [
+                        {
+                                "author": "Кристина",
+                                "text": "Очень удобные, нога не устает."
+                        },
+                        {
+                                "author": "Элина",
+                                "text": "Для зала и дорожки — супер."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/3.jpg"
+                       
+                ]
+        },
+        {
+                "id": 8,
+                "name": "Спортивная сумка Fighter Bag",
+                "brand": "Fight Shop KMW",
+                "category": "accessories",
+                "gender": "unisex",
+                "sizes": [
+                        "One Size"
+                ],
+                "price": 3190,
+                "stock": 16,
+                "popular": false,
+                "rating": 4.6,
+                "description": "Вместительная сумка с отдельным отсеком под обувь и экипировку.",
+                "reviews": [
+                        {
+                                "author": "Георгий",
+                                "text": "Много отделений, удобно носить форму."
+                        },
+                        {
+                                "author": "Павел",
+                                "text": "Для тренировок и поездок отлично."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/9.png"
+                ]
+        },
+        {
+                "id": 9,
+                "name": "Борцовки Mat Flex",
+                "brand": "Mat Flex",
+                "category": "shoes",
+                "gender": "unisex",
+                "sizes": [
+                        "39",
+                        "40",
+                        "41",
+                        "42",
+                        "43",
+                        "44"
+                ],
+                "price": 6990,
+                "stock": 6,
+                "popular": false,
+                "rating": 4.7,
+                "description": "Гибкие борцовки с надежной фиксацией и сцеплением на ковре.",
+                "reviews": [
+                        {
+                                "author": "Ислам",
+                                "text": "На ковре держат уверенно, очень легкие."
+                        },
+                        {
+                                "author": "Олег",
+                                "text": "Хорошая шнуровка и посадка."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/10.jpg"
+                ]
+        },
+        {
+                "id": 10,
+                "name": "Капа двойная Safe Bite",
+                "brand": "Safe Bite",
+                "category": "accessories",
+                "gender": "unisex",
+                "sizes": [
+                        "One Size"
+                ],
+                "price": 990,
+                "stock": 0,
+                "popular": false,
+                "rating": 4.4,
+                "description": "Термопластичная капа для защиты зубов на спаррингах и соревнованиях.",
+                "reviews": [
+                        {
+                                "author": "Роман",
+                                "text": "Формуется быстро, сидит плотно."
+                        },
+                        {
+                                "author": "Давид",
+                                "text": "Хороший вариант за свои деньги."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/11.jpg"
+                ]
+        },
+        {
+                "id": 11,
+                "name": "Тайтсы женские Motion Fit",
+                "brand": "Motion Fit",
+                "category": "clothing",
+                "gender": "women",
+                "sizes": [
+                        "XS",
+                        "S",
+                        "M",
+                        "L",
+                        "XL"
+                ],
+                "price": 2790,
+                "stock": 11,
+                "popular": false,
+                "rating": 4.6,
+                "description": "Эластичные тайтсы для фитнеса, растяжки и функциональных тренировок.",
+                "reviews": [
+                        {
+                                "author": "Вера",
+                                "text": "Удобные, ткань не просвечивает."
+                        },
+                        {
+                                "author": "Дарья",
+                                "text": "Хорошо тянутся и держатся по фигуре."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/12.jpg"
+                        
+                ]
+        },
+        {
+                "id": 12,
+                "name": "Толстовка унисекс Fight Team",
+                "brand": "Fight Team",
+                "category": "clothing",
+                "gender": "unisex",
+                "sizes": [
+                        "S",
+                        "M",
+                        "L",
+                        "XL",
+                        "XXL"
+                ],
+                "price": 4690,
+                "stock": 7,
+                "popular": true,
+                "rating": 4.8,
+                "description": "Плотная толстовка с капюшоном для тренировок и повседневного стиля.",
+                "reviews": [
+                        {
+                                "author": "Сергей",
+                                "text": "Очень плотная ткань, смотрится достойно."
+                        },
+                        {
+                                "author": "Азамат",
+                                "text": "Брендинг аккуратный, сидит отлично."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/4.jpg",
+                        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80"
+                ]
+        },
+        {
+                "id": 13,
+                "name": "Скакалка скоростная Speed Rope",
+                "brand": "Speed Rope",
+                "category": "accessories",
+                "gender": "unisex",
+                "sizes": [
+                        "One Size"
+                ],
+                "price": 1290,
+                "stock": 20,
+                "popular": false,
+                "rating": 4.5,
+                "description": "Подходит для кардио, разминки и работы на выносливость.",
+                "reviews": [
+                        {
+                                "author": "Алексей",
+                                "text": "Легкая, вращается быстро, ничего не люфтит."
+                        },
+                        {
+                                "author": "Максим",
+                                "text": "Отличная разминочная скакалка."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/14.jpg",
+                        "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80"
+                ]
+        },
+        {
+                "id": 14,
+                "name": "Спарринговый шлем Head Guard",
+                "brand": "Head Guard",
+                "category": "accessories",
+                "gender": "unisex",
+                "sizes": [
+                        "S",
+                        "M",
+                        "L"
+                ],
+                "price": 5890,
+                "stock": 2,
+                "popular": false,
+                "rating": 4.7,
+                "description": "Защитный шлем с хорошим обзором и амортизацией ударов.",
+                "reviews": [
+                        {
+                                "author": "Заур",
+                                "text": "Сидит удобно, обзор не режет."
+                        },
+                        {
+                                "author": "Мурат",
+                                "text": "Для спаррингов оптимален."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/15.png",
+                        "https://images.unsplash.com/photo-1549570652-97324981a6fd?auto=format&fit=crop&w=900&q=80"
+                ]
+        },
+        {
+                "id": 15,
+                "name": "Мужская футболка Fight Camp",
+                "brand": "Fight Camp",
+                "category": "clothing",
+                "gender": "men",
+                "sizes": [
+                        "S",
+                        "M",
+                        "L",
+                        "XL",
+                        "XXL"
+                ],
+                "price": 2190,
+                "stock": 13,
+                "popular": false,
+                "rating": 4.5,
+                "description": "Дышащая футболка для тренировочного лагеря и ежедневной носки.",
+                "reviews": [
+                        {
+                                "author": "Дмитрий",
+                                "text": "Базовая, но очень удобная футболка."
+                        },
+                        {
+                                "author": "Илья",
+                                "text": "Для зала и улицы норм."
+                        }
+                ],
+                "gallery": [
+                        "assets/images/16.jpg",
+                        "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?auto=format&fit=crop&w=900&q=80"
+                ]
+        }
+];
+
+        const allSizes = ["XS","S","M","L","XL","XXL","36","37","38","39","40","41","42","43","44","45","One Size","10 oz","12 oz","14 oz","16 oz"];
+        const DELIVERY_COST = 300;
+        const FREE_DELIVERY_THRESHOLD = 5000;
+        const PROMO_CODES = {
+            "FIGHT10": { type: "percent", value: 10, text: "Скидка 10% на весь заказ" },
+            "SPORT20": { type: "percent", value: 20, text: "Скидка 20% при большой покупке" },
+            "KMW500": { type: "fixed", value: 500, text: "Минус 500 ₽ от суммы заказа" }
+        };
+        const receiveMethods = {
+            store: { name: "В магазине (самовывоз)" },
+            delivery: { name: "Доставка курьером" }
+        };
+        const paymentMethods = {
+            cash: { name: "Наличными" },
+            card: { name: "Картой при получении" }
+        };
+
+        let cart = JSON.parse(localStorage.getItem('sportshop_cart_v2')) || [];
+        let favorites = JSON.parse(localStorage.getItem('fightshop_favorites')) || [];
+        let orders = JSON.parse(localStorage.getItem('sportshop_orders_v2')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('fightshop_user')) || null;
+        let currentFilter = 'all';
+        let currentGenderFilter = 'all';
+        let currentSizeFilter = null;
+        let currentSearch = '';
+        let currentSort = 'default';
+        let currentMinPrice = '';
+        let currentMaxPrice = '';
+        let currentPromoCode = localStorage.getItem('fightshop_promo') || '';
+        let currentOrder = null;
+        let itemToRemove = null;
+        let currentQuickProduct = null;
+        let currentGalleryIndex = 0;
+        let dealEndDate = new Date('2026-03-31T23:59:59');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initSizeFilters();
+            setupToolbar();
+            setupFilterToggle();
+            setupReceiveMethods();
+            setupPaymentMethods();
+            setupFormValidation();
+            setupHeaderActions();
+            setupPromoBox();
+            setupStaticModalHandlers();
+            updateUserUI();
+            renderPopularProducts();
+            displayProducts();
+            updateCartUI();
+            updateWishlistCounter();
+            updateBreadcrumbs();
+            renderRecommendations();
+            startCountdown();
+        });
+
+        function setupHeaderActions() {
+            document.getElementById('cart-toggle')?.addEventListener('click', toggleCart);
+            document.getElementById('close-cart')?.addEventListener('click', toggleCart);
+            document.getElementById('cart-overlay')?.addEventListener('click', toggleCart);
+            document.getElementById('order-form')?.addEventListener('submit', processOrder);
+            document.getElementById('checkout-trigger')?.addEventListener('click', toggleCheckoutDetails);
+            document.getElementById('checkout-back-btn')?.addEventListener('click', backToCartView);
+            document.getElementById('filters-toggle')?.addEventListener('click', () => {
+                document.getElementById('advanced-filters')?.classList.toggle('collapsed');
+            });
+            document.getElementById('auth-open')?.addEventListener('click', openAuthModal);
+            document.getElementById('orders-open')?.addEventListener('click', openOrdersModal);
+            document.getElementById('logout-btn')?.addEventListener('click', logoutUser);
+            document.getElementById('auth-save')?.addEventListener('click', saveUserAuth);
+            document.getElementById('print-receipt')?.addEventListener('click', printReceipt);
+            document.getElementById('download-receipt')?.addEventListener('click', downloadReceiptPDF);
+            document.getElementById('close-receipt')?.addEventListener('click', closeReceiptModal);
+            document.getElementById('close-receipt-btn')?.addEventListener('click', closeReceiptModal);
+            document.getElementById('confirm-yes')?.addEventListener('click', confirmRemove);
+            document.getElementById('confirm-no')?.addEventListener('click', cancelRemove);
+
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.filter;
+                    displayProducts();
+                });
+            });
+
+            document.querySelectorAll('.gender-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.gender-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    currentGenderFilter = this.dataset.gender;
+                    displayProducts();
+                });
+            });
+
+            document.querySelectorAll('.modal-shell').forEach(modal => {
+                modal.addEventListener('click', e => {
+                    if (e.target === modal) modal.classList.remove('active');
+                });
+            });
+            document.querySelectorAll('[data-close-modal]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById(btn.dataset.closeModal)?.classList.remove('active');
+                });
+            });
+        }
+
+        function setupStaticModalHandlers() {
+            document.getElementById('receipt-modal')?.addEventListener('click', function(e) {
+                if (e.target === this) closeReceiptModal();
+            });
+            document.getElementById('confirm-modal')?.addEventListener('click', function(e) {
+                if (e.target === this) cancelRemove();
+            });
+        }
+
+        function setupToolbar() {
+            document.getElementById('product-search')?.addEventListener('input', function() {
+                currentSearch = this.value.trim().toLowerCase();
+                displayProducts();
+            });
+            document.getElementById('sort-select')?.addEventListener('change', function() {
+                currentSort = this.value;
+                displayProducts();
+            });
+            document.getElementById('min-price')?.addEventListener('input', function() {
+                currentMinPrice = this.value.trim();
+                displayProducts();
+            });
+            document.getElementById('max-price')?.addEventListener('input', function() {
+                currentMaxPrice = this.value.trim();
+                displayProducts();
+            });
+        }
+
+        function setupFilterToggle() {}
+
+        function initSizeFilters() {
+            const sizeOptionsContainer = document.getElementById('size-options');
+            if (!sizeOptionsContainer) return;
+            sizeOptionsContainer.innerHTML = '';
+            const allOption = document.createElement('div');
+            allOption.className = 'size-option active';
+            allOption.textContent = 'Все размеры';
+            allOption.dataset.size = 'all';
+            allOption.addEventListener('click', function() {
+                document.querySelectorAll('.size-option').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+                currentSizeFilter = null;
+                displayProducts();
+            });
+            sizeOptionsContainer.appendChild(allOption);
+            allSizes.forEach(size => {
+                const el = document.createElement('div');
+                el.className = 'size-option';
+                el.textContent = size;
+                el.dataset.size = size;
+                el.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    document.querySelectorAll('.size-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    currentSizeFilter = size;
+                    displayProducts();
+                });
+                sizeOptionsContainer.appendChild(el);
+            });
+            updateSizeFilterAvailability();
+        }
+
+        function setupReceiveMethods() {
+            const addressGroup = document.getElementById('address-group');
+            const addressInput = document.getElementById('delivery-address');
+            document.querySelectorAll('.receive-radio').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('.receive-option').forEach(label => label.classList.remove('selected'));
+                    this.closest('.receive-option')?.classList.add('selected');
+                    const deliveryMode = this.value === 'delivery';
+                    if (addressGroup) {
+                        addressGroup.classList.toggle('visible', deliveryMode);
+                        addressGroup.style.display = deliveryMode ? 'block' : 'none';
+                    }
+                    if (addressInput) {
+                        addressInput.required = deliveryMode;
+                        if (!deliveryMode) addressInput.value = '';
+                    }
+                    const cashDesc = document.getElementById('cash-description');
+                    const cardDesc = document.getElementById('card-description');
+                    if (cashDesc) cashDesc.textContent = deliveryMode ? 'При получении у курьера' : 'При получении в магазине';
+                    if (cardDesc) cardDesc.textContent = deliveryMode ? 'Курьеру при получении' : 'В магазине при получении';
+                    updateCartUI();
+                });
+            });
+        }
+
+        function setupPaymentMethods() {
+            document.querySelectorAll('.payment-radio').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('.payment-method').forEach(label => label.classList.remove('selected'));
+                    this.closest('.payment-method')?.classList.add('selected');
+                });
+            });
+        }
+
+        const validators = {
+            name: value => value.trim().length < 3 ? 'Введите имя и фамилию' : '',
+            phone: value => /^\+?[0-9\s\-()](10,)$/.test(value.trim()) ? '' : 'Укажите корректный номер телефона',
+            email: value => !value.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim()) ? '' : 'Проверьте email',
+            address: (value, receiveMethod) => receiveMethod !== 'delivery' || value.trim().length >= 8 ? '' : 'Введите полный адрес доставки'
+        };
+
+        function setupFormValidation() {
+            [['name','customer-name'], ['phone','customer-phone'], ['email','customer-email']].forEach(([field, id]) => {
+                const input = document.getElementById(id);
+                if (!input) return;
+                input.addEventListener('blur', () => validateField(field, input.value));
+                input.addEventListener('input', () => clearFieldError(field, input));
+            });
+            const addressInput = document.getElementById('delivery-address');
+            if (addressInput) {
+                addressInput.addEventListener('blur', () => {
+                    const method = document.querySelector('input[name="receive-method"]:checked')?.value || 'store';
+                    validateField('address', addressInput.value, method);
+                });
+                addressInput.addEventListener('input', () => clearFieldError('address', addressInput));
+            }
+        }
+
+        function validateField(field, value, extra = null) {
+            const inputMap = {
+                name: 'customer-name',
+                phone: 'customer-phone',
+                email: 'customer-email',
+                address: 'delivery-address'
+            };
+            const errorMap = {
+                name: 'name-error',
+                phone: 'phone-error',
+                email: 'email-error',
+                address: 'address-error'
+            };
+            const input = document.getElementById(inputMap[field]);
+            const errorEl = document.getElementById(errorMap[field]);
+            const message = validators[field] ? validators[field](value, extra) : '';
+            if (!input || !errorEl) return !message;
+            if (message) {
+                input.classList.add('error');
+                errorEl.textContent = message;
+                errorEl.style.display = 'block';
+                return false;
+            }
+            input.classList.remove('error');
+            errorEl.style.display = 'none';
+            return true;
+        }
+
+        function clearFieldError(field, input) {
+            input?.classList.remove('error');
+            const errorMap = { name: 'name-error', phone: 'phone-error', email: 'email-error', address: 'address-error' };
+            const errorEl = document.getElementById(errorMap[field]);
+            if (errorEl) errorEl.style.display = 'none';
+        }
+
+        function getCategoryName(category) {
+            return { shoes:'Обувь', clothing:'Одежда', accessories:'Аксессуары' }[category] || category;
+        }
+        function getGenderName(gender) {
+            return { men:'Мужское', women:'Женское', unisex:'Унисекс' }[gender] || gender;
+        }
+        function formatPrice(price) {
+            return Number(price).toLocaleString('ru-RU') + ' ₽';
+        }
+        function escapeHTML(text) {
+            const div = document.createElement('div');
+            div.textContent = text ?? '';
+            return div.innerHTML;
+        }
+        function stars(rating) {
+            const rounded = Math.round(rating);
+            return '★'.repeat(rounded) + '☆'.repeat(5 - rounded);
+        }
+        function getStockMeta(stock) {
+            if (stock <= 0) return { cls:'empty', badge:'stock-empty', text:'Нет в наличии' };
+            if (stock <= 4) return { cls:'low', badge:'stock-low', text:`Осталось ${stock} шт.` };
+            return { cls:'ok', badge:'stock-ok', text:'В наличии' };
+        }
+        function getProductById(id) {
+            return products.find(p => p.id === Number(id));
+        }
+        function getCartQuantity(productId) {
+            return cart.filter(item => item.id === productId).reduce((sum, item) => sum + item.quantity, 0);
+        }
+        function isFavorite(productId) {
+            return favorites.includes(productId);
+        }
+
+        function filterProducts() {
+            let filtered = [...products];
+            if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter);
+            if (currentGenderFilter !== 'all') filtered = filtered.filter(p => p.gender === currentGenderFilter);
+            if (currentSizeFilter) filtered = filtered.filter(p => p.sizes.includes(currentSizeFilter));
+            if (currentSearch) {
+                filtered = filtered.filter(p => [p.name, p.description, p.brand, getCategoryName(p.category), getGenderName(p.gender)].join(' ').toLowerCase().includes(currentSearch));
+            }
+            if (currentMinPrice) filtered = filtered.filter(p => p.price >= Number(currentMinPrice));
+            if (currentMaxPrice) filtered = filtered.filter(p => p.price <= Number(currentMaxPrice));
+            switch (currentSort) {
+                case 'price-asc': filtered.sort((a,b) => a.price - b.price); break;
+                case 'price-desc': filtered.sort((a,b) => b.price - a.price); break;
+                case 'name-asc': filtered.sort((a,b) => a.name.localeCompare(b.name, 'ru')); break;
+                case 'popular': filtered.sort((a,b) => Number(b.popular) - Number(a.popular) || b.rating - a.rating); break;
+                default: break;
+            }
+            return filtered;
+        }
+
+        function updateSizeFilterAvailability() {
+            const options = document.querySelectorAll('.size-option');
+            let filtered = [...products];
+            if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter);
+            if (currentGenderFilter !== 'all') filtered = filtered.filter(p => p.gender === currentGenderFilter);
+            if (currentMinPrice) filtered = filtered.filter(p => p.price >= Number(currentMinPrice));
+            if (currentMaxPrice) filtered = filtered.filter(p => p.price <= Number(currentMaxPrice));
+            const available = new Set(filtered.flatMap(p => p.sizes || []));
+            options.forEach(option => {
+                const size = option.dataset.size;
+                if (size === 'all') return;
+                option.classList.toggle('disabled', !available.has(size));
+                if (!available.has(size) && currentSizeFilter === size) {
+                    currentSizeFilter = null;
+                    option.classList.remove('active');
+                    document.querySelector('.size-option[data-size="all"]')?.classList.add('active');
+                }
+            });
+        }
+
+        function getPrimaryImage(product) {
+            if (product && product.image) return product.image;
+            if (product && Array.isArray(product.gallery) && product.gallery.length) return product.gallery[0];
+            return 'assets/images/no-photo.jpg';
+        }
+
+        function displayProducts() {
+            const container = document.getElementById('products-container');
+            if (!container) return;
+            updateSizeFilterAvailability();
+            const filtered = filterProducts();
+            container.innerHTML = '';
+            document.getElementById('results-summary').textContent = `Найдено товаров: ${filtered.length}`;
+            updateBreadcrumbs();
+            renderRecommendations(filtered);
+
+            if (!filtered.length) {
+                container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><i class="fas fa-search" style="font-size:48px; opacity:.45; margin-bottom:14px"></i><h3>Ничего не найдено</h3><p>Попробуй изменить фильтры, цену или поисковый запрос.</p></div>`;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const stockMeta = getStockMeta(product.stock);
+                const qty = getCartQuantity(product.id);
+                const inCartText = qty ? `В корзине (${qty})` : 'В корзину';
+                const disabledAttr = product.stock <= 0 ? 'disabled' : '';
+                const card = document.createElement('article');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-image" data-gallery-open="${product.id}">
+                        <img src="${escapeHTML(getPrimaryImage(product))}" alt="${escapeHTML(product.name)}">
+                        <div class="quick-actions">
+                            <button class="icon-btn favorite-btn ${isFavorite(product.id) ? 'active' : ''}" data-favorite="${product.id}" title="В избранное"><i class="fas fa-heart"></i></button>
+                        </div>
+                        <button class="quick-view-trigger" data-quick="${product.id}"><i class="fas fa-eye"></i> Быстрый просмотр</button>
+                    </div>
+                    <div class="product-info">
+                        <div class="badge-row">
+                            <span class="mini-badge">${escapeHTML(getCategoryName(product.category))}</span>
+                            <span class="mini-badge">${escapeHTML(getGenderName(product.gender))}</span>
+                            ${product.popular ? '<span class="mini-badge hot">Хит продаж</span>' : ''}
+                            <span class="mini-badge ${stockMeta.badge}">${stockMeta.text}</span>
+                        </div>
+                        <div class="product-brand">${escapeHTML(product.brand)}</div>
+                        <h3 class="product-title">${escapeHTML(product.name)}</h3>
+                        <p class="product-description">${escapeHTML(product.description)}</p>
+                        <div class="reviews-preview">
+                            <span class="stars">${stars(product.rating)}</span>
+                            <span>${product.rating.toFixed(1)} · отзывов: ${product.reviews.length}</span>
+                        </div>
+                        <div class="stock-text ${stockMeta.cls}">${stockMeta.text}</div>
+                        <div class="product-sizes">${product.sizes.map(size => `<span class="size-tag">${escapeHTML(size)}</span>`).join('')}</div>
+                        <div class="product-footer">
+                            <div>
+                                <div class="product-price">${formatPrice(product.price)}</div>
+                                ${product.oldPrice ? `<div style="color:#97a3b8;font-size:.9rem;text-decoration:line-through">${formatPrice(product.oldPrice)}</div>` : ''}
+                            </div>
+                            <button class="add-to-cart" data-id="${product.id}" ${disabledAttr}>
+                                <i class="fas fa-cart-plus"></i> ${product.stock <= 0 ? 'Нет в наличии' : inCartText}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            container.querySelectorAll('[data-favorite]').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    toggleFavorite(Number(btn.dataset.favorite));
+                });
+            });
+            container.querySelectorAll('[data-quick]').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    e.stopPropagation();
+                    openQuickView(Number(btn.dataset.quick));
+                });
+            });
+            container.querySelectorAll('[data-gallery-open]').forEach(el => {
+                el.addEventListener('click', () => openQuickView(Number(el.dataset.galleryOpen)));
+            });
+            container.querySelectorAll('.add-to-cart').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = Number(this.dataset.id);
+                    const product = getProductById(id);
+                    if (!product || product.stock <= 0) return;
+                    this.disabled = true;
+                    setTimeout(() => this.disabled = false, 450);
+                    if (product.sizes?.length > 1) {
+                        showSizeSelectionModal(product);
+                    } else {
+                        addToCart(id, product.sizes?.[0] || null);
+                    }
+                });
+            });
+        }
+
+        function renderPopularProducts() {
+            const container = document.getElementById('popular-products');
+            if (!container) return;
+            const popular = [...products].filter(p => p.popular).sort((a,b) => b.rating - a.rating).slice(0,4);
+            container.innerHTML = popular.map(product => `
+                <article class="popular-card">
+                    <div class="popular-image"><img src="${escapeHTML(getPrimaryImage(product))}" alt="${escapeHTML(product.name)}"></div>
+                    <div class="popular-body">
+                        <div class="badge-row">
+                            <span class="mini-badge hot">Хит продаж</span>
+                            <span class="mini-badge">${escapeHTML(product.brand)}</span>
+                        </div>
+                        <h4 style="margin-bottom:8px">${escapeHTML(product.name)}</h4>
+                        <p class="muted-note" style="min-height:44px">${escapeHTML(product.description)}</p>
+                        <div class="reviews-preview"><span class="stars">${stars(product.rating)}</span><span>${product.rating.toFixed(1)}</span></div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+                            <strong style="color:#1a2980;font-size:1.15rem">${formatPrice(product.price)}</strong>
+                            <button class="secondary-btn" data-quick="${product.id}">Смотреть</button>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+            container.querySelectorAll('[data-quick]').forEach(btn => btn.addEventListener('click', () => openQuickView(Number(btn.dataset.quick))));
+        }
+
+        function renderRecommendations(filteredProducts = null) {
+            const container = document.getElementById('recommend-list');
+            if (!container) return;
+            const source = filteredProducts && filteredProducts.length ? filteredProducts : products;
+            const top = [...source].sort((a,b) => b.rating - a.rating || Number(b.popular) - Number(a.popular)).slice(0,4);
+            container.innerHTML = top.map(product => `
+                <div class="recommend-card">
+                    <div class="badge-row">
+                        <span class="mini-badge">${escapeHTML(product.brand)}</span>
+                        <span class="mini-badge">${escapeHTML(getCategoryName(product.category))}</span>
+                    </div>
+                    <div style="font-weight:700; margin-bottom:6px">${escapeHTML(product.name)}</div>
+                    <div class="muted-note">${escapeHTML(product.description)}</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center; margin-top:12px">
+                        <strong>${formatPrice(product.price)}</strong>
+                        <button class="secondary-btn" data-quick="${product.id}">Подробнее</button>
+                    </div>
+                </div>
+            `).join('');
+            container.querySelectorAll('[data-quick]').forEach(btn => btn.addEventListener('click', () => openQuickView(Number(btn.dataset.quick))));
+        }
+
+        function toggleFavorite(productId) {
+            favorites = isFavorite(productId) ? favorites.filter(id => id !== productId) : [...favorites, productId];
+            localStorage.setItem('fightshop_favorites', JSON.stringify(favorites));
+            updateWishlistCounter();
+            displayProducts();
+            showNotification(isFavorite(productId) ? 'Товар добавлен в избранное' : 'Товар удалён из избранного');
+        }
+
+        function updateWishlistCounter() {
+            const el = document.getElementById('wishlist-count');
+            if (el) el.textContent = favorites.length;
+        }
+
+        function updateBreadcrumbs() {
+            const el = document.getElementById('breadcrumbs');
+            if (!el) return;
+            const crumbs = ['Главная', 'Каталог'];
+            if (currentFilter !== 'all') crumbs.push(getCategoryName(currentFilter));
+            if (currentGenderFilter !== 'all') crumbs.push(getGenderName(currentGenderFilter));
+            if (currentSearch) crumbs.push(`Поиск: "${currentSearch}"`);
+            el.innerHTML = crumbs.map(item => `<span>${escapeHTML(item)}</span>`).join('<span>/</span>');
+        }
+
+        function showSizeSelectionModal(product) {
+            const modal = document.getElementById('quick-view-modal');
+            currentQuickProduct = product;
+            currentGalleryIndex = 0;
+            fillQuickView(product, true);
+            modal.classList.add('active');
+        }
+
+        function openQuickView(productId) {
+            const product = getProductById(productId);
+            if (!product) return;
+            currentQuickProduct = product;
+            currentGalleryIndex = 0;
+            fillQuickView(product, false);
+            document.getElementById('quick-view-modal')?.classList.add('active');
+        }
+
+        function fillQuickView(product, focusSizes) {
+            const body = document.getElementById('quick-view-body');
+            if (!body) return;
+            const stockMeta = getStockMeta(product.stock);
+            const related = products.filter(p => p.id !== product.id && (p.category === product.category || p.gender === product.gender)).slice(0,3);
+            const primaryImage = getPrimaryImage(product);
+            body.innerHTML = `
+                <div class="modal-grid">
+                    <div>
+                        <div class="gallery-main"><img src="${escapeHTML(primaryImage)}" alt="${escapeHTML(product.name)}"></div>
+                    </div>
+                    <div>
+                        <div class="badge-row">
+                            <span class="mini-badge">${escapeHTML(product.brand)}</span>
+                            <span class="mini-badge">${escapeHTML(getCategoryName(product.category))}</span>
+                            <span class="mini-badge ${stockMeta.badge}">${stockMeta.text}</span>
+                        </div>
+                        <h2 style="margin:8px 0 10px">${escapeHTML(product.name)}</h2>
+                        <div class="quick-meta">
+                            <span class="mini-badge">${escapeHTML(getGenderName(product.gender))}</span>
+                            <span class="mini-badge hot">${stars(product.rating)} ${product.rating.toFixed(1)}</span>
+                        </div>
+                        <p class="muted-note">${escapeHTML(product.description)}</p>
+                        <div class="quick-price">${formatPrice(product.price)}</div>
+                        <div class="product-sizes">${product.sizes.map(size => `<button class="size-selection-btn" data-size="${escapeHTML(size)}">${escapeHTML(size)}</button>`).join('')}</div>
+                        <div style="display:flex; gap:10px; margin-top:16px; flex-wrap:wrap">
+                            <button class="primary-btn" id="quick-add-to-cart" ${product.stock <= 0 ? 'disabled' : ''}><i class="fas fa-cart-plus"></i> ${product.stock <= 0 ? 'Нет в наличии' : 'Добавить в корзину'}</button>
+                            <button class="secondary-btn" id="quick-toggle-favorite"><i class="fas fa-heart"></i> ${isFavorite(product.id) ? 'Убрать из избранного' : 'В избранное'}</button>
+                        </div>
+                        <div class="review-list">
+                            <h4 style="color:#1a2980; margin-top:14px">Отзывы покупателей</h4>
+                            ${product.reviews.map(review => `<div class="review-item"><strong>${escapeHTML(review.author)}</strong><div class="stars" style="margin:4px 0">${stars(product.rating)}</div><div>${escapeHTML(review.text)}</div></div>`).join('')}
+                        </div>
+                        <div class="recommend-strip">
+                            <div class="section-head" style="margin-bottom:10px"><h3>С этим товаром покупают</h3></div>
+                            <div class="recommend-list">
+                                ${related.map(item => `<div class="recommend-card"><div style="font-weight:700; margin-bottom:6px">${escapeHTML(item.name)}</div><div class="muted-note">${escapeHTML(item.description)}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><strong>${formatPrice(item.price)}</strong><button class="secondary-btn" data-related="${item.id}">Открыть</button></div></div>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            let selectedSize = product.sizes[0] || null;
+            const sizeButtons = body.querySelectorAll('.size-selection-btn');
+            if (sizeButtons.length) {
+                sizeButtons[0].classList.add('selected');
+                sizeButtons.forEach(btn => btn.addEventListener('click', () => {
+                    sizeButtons.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedSize = btn.dataset.size;
+                }));
+            }
+            body.querySelector('#quick-add-to-cart')?.addEventListener('click', () => {
+                addToCart(product.id, selectedSize);
+                if (focusSizes) document.getElementById('quick-view-modal')?.classList.remove('active');
+            });
+            body.querySelector('#quick-toggle-favorite')?.addEventListener('click', () => {
+                toggleFavorite(product.id);
+                fillQuickView(product, false);
+            });
+            body.querySelectorAll('[data-related]').forEach(btn => btn.addEventListener('click', () => openQuickView(Number(btn.dataset.related))));
+            if (focusSizes) {
+                body.querySelector('.product-sizes')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function addToCart(productId, size = null) {
+            const product = getProductById(productId);
+            if (!product || product.stock <= 0) {
+                showNotification('Товар сейчас недоступен', 'error');
+                return;
+            }
+            const existingIndex = cart.findIndex(item => item.id === productId && item.selectedSize === size);
+            if (existingIndex !== -1) {
+                if (cart[existingIndex].quantity >= product.stock) {
+                    showNotification('Больше единиц нет в наличии', 'error');
+                    return;
+                }
+                cart[existingIndex].quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1, selectedSize: size });
+            }
+            saveCart();
+            updateCartUI();
+            displayProducts();
+            showNotification(`"${product.name}" добавлен в корзину`);
+        }
+
+        function requestRemoveFromCart(productId, size = null) {
+            itemToRemove = { productId, size };
+            document.getElementById('confirm-modal')?.classList.add('active');
+            const item = cart.find(i => i.id === productId && i.selectedSize === size);
+            const msg = document.getElementById('confirm-message');
+            if (msg && item) msg.textContent = `Удалить "${item.name}"${item.selectedSize ? ' (' + item.selectedSize + ')' : ''} из корзины?`;
+        }
+        function confirmRemove() {
+            if (!itemToRemove) return;
+            cart = cart.filter(item => !(item.id === itemToRemove.productId && item.selectedSize === itemToRemove.size));
+            itemToRemove = null;
+            saveCart();
+            updateCartUI();
+            displayProducts();
+            document.getElementById('confirm-modal')?.classList.remove('active');
+        }
+        function cancelRemove() {
+            itemToRemove = null;
+            document.getElementById('confirm-modal')?.classList.remove('active');
+        }
+        function updateQuantity(productId, change, size = null) {
+            const item = cart.find(i => i.id === productId && i.selectedSize === size);
+            const product = getProductById(productId);
+            if (!item || !product) return;
+            item.quantity += change;
+            if (item.quantity <= 0) return requestRemoveFromCart(productId, size);
+            if (item.quantity > product.stock) {
+                item.quantity = product.stock;
+                showNotification('Достигнут максимум по наличию', 'error');
+            }
+            saveCart();
+            updateCartUI();
+            displayProducts();
+        }
+        function saveCart() {
+            localStorage.setItem('sportshop_cart_v2', JSON.stringify(cart));
+        }
+
+        function setupPromoBox() {
+            const input = document.getElementById('promo-code-input');
+            if (input) input.value = currentPromoCode;
+            document.getElementById('apply-promo-btn')?.addEventListener('click', () => {
+                const code = (input?.value || '').trim().toUpperCase();
+                if (!code) {
+                    currentPromoCode = '';
+                    localStorage.removeItem('fightshop_promo');
+                    updateCartUI();
+                    return;
+                }
+                if (!PROMO_CODES[code]) {
+                    showNotification('Промокод не найден', 'error');
+                    return;
+                }
+                currentPromoCode = code;
+                localStorage.setItem('fightshop_promo', code);
+                updateCartUI();
+                showNotification(`Промокод ${code} применён`);
+            });
+        }
+
+        function getPromoDiscount(subtotal) {
+            if (!currentPromoCode || !PROMO_CODES[currentPromoCode]) return 0;
+            const promo = PROMO_CODES[currentPromoCode];
+            if (promo.type === 'percent') return Math.round(subtotal * promo.value / 100);
+            return subtotal >= 3000 ? promo.value : 0;
+        }
+
+        function calculateDelivery(total, receiveMethod) {
+            if (receiveMethod === 'store') return { cost: 0, isFree: true };
+            return total >= FREE_DELIVERY_THRESHOLD ? { cost: 0, isFree: true } : { cost: DELIVERY_COST, isFree: false };
+        }
+
+        function setCheckoutOpen(isOpen) {
+            const details = document.getElementById('checkout-details');
+            const trigger = document.getElementById('checkout-trigger');
+            const backBtn = document.getElementById('checkout-back-btn');
+            const cartView = document.getElementById('cart-view');
+            if (!details || !trigger || !backBtn || !cartView) return;
+
+            const canOpen = cart.length > 0;
+            trigger.disabled = !canOpen;
+
+            if (!canOpen) {
+                details.classList.remove('active');
+                cartView.classList.remove('hidden');
+                backBtn.classList.remove('active');
+                trigger.style.display = 'flex';
+                trigger.innerHTML = '<i class="fas fa-arrow-right"></i> Перейти к оформлению';
+                return;
+            }
+
+            if (isOpen) {
+                details.classList.add('active');
+                cartView.classList.add('hidden');
+                trigger.style.display = 'none';
+                backBtn.classList.add('active');
+            } else {
+                details.classList.remove('active');
+                cartView.classList.remove('hidden');
+                trigger.style.display = 'flex';
+                backBtn.classList.remove('active');
+                trigger.innerHTML = '<i class="fas fa-arrow-right"></i> Перейти к оформлению';
+            }
+        }
+
+        function backToCartView() {
+            setCheckoutOpen(false);
+            document.getElementById('cart-items')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function toggleCheckoutDetails() {
+            if (!cart.length) {
+                showNotification('Сначала добавьте товар в корзину', 'error');
+                return;
+            }
+            setCheckoutOpen(true);
+            document.getElementById('checkout-details')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartCount = document.getElementById('cart-count');
+            const cartSubtotal = document.getElementById('cart-subtotal');
+            const cartDeliveryCost = document.getElementById('cart-delivery-cost');
+            const cartSummaryTotal = document.getElementById('cart-summary-total');
+            const cartTotal = document.getElementById('cart-total');
+            const deliveryRow = document.querySelector('.delivery-row');
+            const promoRow = document.getElementById('promo-summary-row');
+            const promoAmount = document.getElementById('promo-discount-amount');
+            const promoHint = document.getElementById('promo-hint');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (cartCount) cartCount.textContent = totalItems;
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const promoDiscount = getPromoDiscount(subtotal);
+            const receiveMethod = document.querySelector('input[name="receive-method"]:checked')?.value || 'store';
+            const delivery = calculateDelivery(subtotal - promoDiscount, receiveMethod);
+            const total = Math.max(0, subtotal - promoDiscount + delivery.cost);
+
+            if (cartSubtotal) cartSubtotal.textContent = formatPrice(subtotal);
+            if (promoRow) promoRow.style.display = promoDiscount ? 'flex' : 'none';
+            if (promoAmount) promoAmount.textContent = promoDiscount ? `− ${formatPrice(promoDiscount)}` : '0 ₽';
+            if (promoHint) {
+                promoHint.textContent = currentPromoCode && PROMO_CODES[currentPromoCode]
+                    ? `Активен код ${currentPromoCode} — ${PROMO_CODES[currentPromoCode].text}`
+                    : 'Попробуйте коды: FIGHT10, SPORT20 или KMW500';
+            }
+            if (receiveMethod === 'store') {
+                deliveryRow.style.display = 'none';
+                document.getElementById('cart-total-delivery').textContent = 'без доставки';
+            } else {
+                deliveryRow.style.display = 'flex';
+                document.getElementById('cart-total-delivery').textContent = 'с доставкой';
+            }
+            if (cartDeliveryCost) cartDeliveryCost.textContent = delivery.isFree ? 'Бесплатно' : formatPrice(delivery.cost);
+            if (cartSummaryTotal) cartSummaryTotal.textContent = formatPrice(total);
+            if (cartTotal) cartTotal.textContent = formatPrice(total);
+            setCheckoutOpen(document.getElementById('checkout-details')?.classList.contains('active'));
+
+            if (!cartItemsContainer) return;
+            if (!cart.length) {
+                cartItemsContainer.innerHTML = '<p class="empty-cart">Корзина пуста</p>';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-image"><img src="${escapeHTML(getPrimaryImage(item))}" alt="${escapeHTML(item.name)}"></div>
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${escapeHTML(item.name)}</div>
+                        <div class="cart-item-details">${escapeHTML(item.brand || '')}</div>
+                        ${item.selectedSize ? `<div class="cart-item-details">Размер: ${escapeHTML(item.selectedSize)}</div>` : ''}
+                        <div class="cart-item-price">${formatPrice(item.price)} × ${item.quantity}</div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn minus" data-id="${item.id}" data-size="${escapeHTML(item.selectedSize || '')}">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn plus" data-id="${item.id}" data-size="${escapeHTML(item.selectedSize || '')}">+</button>
+                        <button class="remove-item" data-id="${item.id}" data-size="${escapeHTML(item.selectedSize || '')}"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+
+            cartItemsContainer.querySelectorAll('.minus').forEach(btn => btn.addEventListener('click', () => updateQuantity(Number(btn.dataset.id), -1, btn.dataset.size || null)));
+            cartItemsContainer.querySelectorAll('.plus').forEach(btn => btn.addEventListener('click', () => updateQuantity(Number(btn.dataset.id), 1, btn.dataset.size || null)));
+            cartItemsContainer.querySelectorAll('.remove-item').forEach(btn => btn.addEventListener('click', () => requestRemoveFromCart(Number(btn.dataset.id), btn.dataset.size || null)));
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            if (!sidebar || !overlay) return;
+            sidebar.classList.toggle('active');
+            overlay.style.display = sidebar.classList.contains('active') ? 'block' : 'none';
+        }
+
+        function processOrder(e) {
+            e.preventDefault();
+            if (!cart.length) return showNotification('Корзина пуста', 'error');
+            const receiveMethod = document.querySelector('input[name="receive-method"]:checked')?.value || 'store';
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.value || 'cash';
+            const isValid = [
+                validateField('name', document.getElementById('customer-name').value),
+                validateField('phone', document.getElementById('customer-phone').value),
+                validateField('email', document.getElementById('customer-email').value),
+                validateField('address', document.getElementById('delivery-address').value, receiveMethod)
+            ].every(Boolean);
+            if (!isValid) return showNotification('Исправьте ошибки в форме', 'error');
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            const promoDiscount = getPromoDiscount(subtotal);
+            const delivery = calculateDelivery(subtotal - promoDiscount, receiveMethod);
+            const total = Math.max(0, subtotal - promoDiscount + delivery.cost);
+
+            currentOrder = {
+                orderNumber: generateOrderNumber(),
+                orderDate: new Date().toISOString(),
+                customer: {
+                    name: document.getElementById('customer-name').value.trim(),
+                    phone: document.getElementById('customer-phone').value.trim(),
+                    email: document.getElementById('customer-email').value.trim(),
+                    address: receiveMethod === 'delivery' ? document.getElementById('delivery-address').value.trim() : '',
+                    comment: document.getElementById('order-comment').value.trim()
+                },
+                user: currentUser,
+                receive: { method: receiveMethod, name: receiveMethods[receiveMethod].name },
+                payment: { method: paymentMethod, name: paymentMethods[paymentMethod].name },
+                items: cart.map(item => ({ ...item })),
+                subtotal,
+                promoCode: currentPromoCode || '',
+                promoDiscount,
+                delivery,
+                total
+            };
+            saveOrderHistory(currentOrder);
+            showReceiptModal(currentOrder);
+            cart = [];
+            saveCart();
+            updateCartUI();
+            displayProducts();
+            document.getElementById('order-form').reset();
+            document.getElementById('address-group').style.display = receiveMethod === 'delivery' ? 'block' : 'none';
+            setCheckoutOpen(false);
+            toggleCart();
+            showNotification(`Заказ №${currentOrder.orderNumber} оформлен`);
+        }
+
+        function generateOrderNumber() {
+            const d = new Date();
+            return `FS-${String(d.getFullYear()).slice(-2)}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*900+100)}`;
+        }
+
+        function saveOrderHistory(order) {
+            orders = [order, ...orders].slice(0, 50);
+            localStorage.setItem('sportshop_orders_v2', JSON.stringify(orders));
+        }
+
+        function showReceiptModal(order) {
+            const modal = document.getElementById('receipt-modal');
+            const title = document.getElementById('receipt-title');
+            const details = document.getElementById('receipt-details');
+            if (!modal || !title || !details) return;
+            const orderDate = new Date(order.orderDate).toLocaleString('ru-RU');
+            title.textContent = `Чек заказа №${order.orderNumber}`;
+            details.innerHTML = `
+                <div class="receipt-details">
+                    <p><strong>Дата:</strong> ${orderDate}</p>
+                    <p><strong>Покупатель:</strong> ${escapeHTML(order.customer.name)}</p>
+                    <p><strong>Телефон:</strong> ${escapeHTML(order.customer.phone)}</p>
+                    ${order.customer.email ? `<p><strong>Email:</strong> ${escapeHTML(order.customer.email)}</p>` : ''}
+                    <p><strong>Получение:</strong> ${escapeHTML(order.receive.name)}</p>
+                    ${order.customer.address ? `<p><strong>Адрес:</strong> ${escapeHTML(order.customer.address)}</p>` : ''}
+                    <p><strong>Оплата:</strong> ${escapeHTML(order.payment.name)}</p>
+                </div>
+                <div class="receipt-items">
+                    ${order.items.map((item, idx) => `<div class="receipt-item"><div><strong>${idx+1}. ${escapeHTML(item.name)}</strong><br><small>${item.quantity} × ${formatPrice(item.price)}${item.selectedSize ? ', размер: ' + escapeHTML(item.selectedSize) : ''}</small></div><div>${formatPrice(item.price * item.quantity)}</div></div>`).join('')}
+                </div>
+                <div class="receipt-item"><div>Сумма товаров</div><div>${formatPrice(order.subtotal)}</div></div>
+                ${order.promoDiscount ? `<div class="receipt-item"><div>Скидка (${escapeHTML(order.promoCode)})</div><div>− ${formatPrice(order.promoDiscount)}</div></div>` : ''}
+                <div class="receipt-item"><div>Доставка</div><div>${order.delivery.cost ? formatPrice(order.delivery.cost) : 'Бесплатно'}</div></div>
+                <div class="receipt-total">Итого: ${formatPrice(order.total)}</div>
+            `;
+            modal.classList.add('active');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receipt-modal')?.classList.remove('active');
+        }
+        function printReceipt() {
+            window.print();
+        }
+        function downloadReceiptPDF() {
+            if (!currentOrder) return;
+            const jsPDF = window.jspdf?.jsPDF;
+            if (!jsPDF) {
+                showNotification('PDF-библиотека не загрузилась, открою печать', 'error');
+                return printReceipt();
+            }
+            const doc = new jsPDF();
+            let y = 15;
+            doc.setFont('helvetica');
+            doc.setFontSize(16);
+            doc.text(`Fight Shop KMW - Order ${currentOrder.orderNumber}`, 14, y); y += 10;
+            doc.setFontSize(11);
+            doc.text(`Date: ${new Date(currentOrder.orderDate).toLocaleString('ru-RU')}`, 14, y); y += 7;
+            doc.text(`Customer: ${currentOrder.customer.name}`, 14, y); y += 7;
+            doc.text(`Phone: ${currentOrder.customer.phone}`, 14, y); y += 7;
+            currentOrder.items.forEach((item, idx) => {
+                const line = `${idx+1}. ${item.name} x${item.quantity} - ${item.price * item.quantity} RUB`;
+                doc.text(line.slice(0, 90), 14, y);
+                y += 7;
+                if (y > 270) { doc.addPage(); y = 15; }
+            });
+            doc.text(`Subtotal: ${currentOrder.subtotal} RUB`, 14, y); y += 7;
+            if (currentOrder.promoDiscount) { doc.text(`Discount: -${currentOrder.promoDiscount} RUB`, 14, y); y += 7; }
+            doc.text(`Delivery: ${currentOrder.delivery.cost} RUB`, 14, y); y += 7;
+            doc.text(`Total: ${currentOrder.total} RUB`, 14, y);
+            doc.save(`fight-shop-${currentOrder.orderNumber}.pdf`);
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-name').value = currentUser?.name || '';
+            document.getElementById('auth-phone').value = currentUser?.phone || '';
+            document.getElementById('auth-email').value = currentUser?.email || '';
+            document.getElementById('auth-modal')?.classList.add('active');
+        }
+        function saveUserAuth() {
+            const name = document.getElementById('auth-name').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
+            const email = document.getElementById('auth-email').value.trim();
+            if (name.length < 2) return showNotification('Укажи имя', 'error');
+            currentUser = { name, phone, email };
+            localStorage.setItem('fightshop_user', JSON.stringify(currentUser));
+            document.getElementById('customer-name').value = name;
+            if (phone) document.getElementById('customer-phone').value = phone;
+            if (email) document.getElementById('customer-email').value = email;
+            updateUserUI();
+            document.getElementById('auth-modal')?.classList.remove('active');
+            showNotification('Профиль сохранён');
+        }
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('fightshop_user');
+            updateUserUI();
+            showNotification('Вы вышли из профиля');
+        }
+        function updateUserUI() {
+            const userLabel = document.getElementById('header-user');
+            const logoutBtn = document.getElementById('logout-btn');
+            if (userLabel) userLabel.textContent = currentUser ? `Профиль: ${currentUser.name}` : 'Гость';
+            if (logoutBtn) logoutBtn.style.display = currentUser ? 'inline-flex' : 'none';
+            if (currentUser) {
+                document.getElementById('customer-name').value = currentUser.name || '';
+                document.getElementById('customer-phone').value = currentUser.phone || '';
+                document.getElementById('customer-email').value = currentUser.email || '';
+            }
+        }
+
+        function openOrdersModal() {
+            const container = document.getElementById('orders-list');
+            const modal = document.getElementById('orders-modal');
+            if (!container || !modal) return;
+            if (!orders.length) {
+                container.innerHTML = '<div class="empty-state">Заказов пока нет. Оформи первый заказ, и он появится здесь.</div>';
+            } else {
+                container.innerHTML = orders.map(order => `
+                    <div class="order-card">
+                        <h4>Заказ №${order.orderNumber}</h4>
+                        <div class="muted-note">${new Date(order.orderDate).toLocaleString('ru-RU')} · ${escapeHTML(order.receive.name)} · ${escapeHTML(order.payment.name)}</div>
+                        <div style="margin:10px 0 8px"><strong>Сумма:</strong> ${formatPrice(order.total)}</div>
+                        <div class="muted-note">${order.items.map(item => escapeHTML(item.name)).join(', ')}</div>
+                    </div>
+                `).join('');
+            }
+            modal.classList.add('active');
+        }
+
+        function showNotification(message, type = 'success') {
+            const note = document.getElementById('notification');
+            if (!note) return;
+            note.textContent = message;
+            note.className = 'notification' + (type === 'error' ? ' error' : '');
+            note.style.display = 'block';
+            clearTimeout(showNotification.timer);
+            showNotification.timer = setTimeout(() => note.style.display = 'none', 2200);
+        }
+
+        function startCountdown() {
+            const timer = document.getElementById('deal-timer');
+            if (!timer) return;
+            function update() {
+                const diff = dealEndDate.getTime() - Date.now();
+                if (diff <= 0) {
+                    timer.textContent = 'Акция завершена';
+                    return;
+                }
+                const days = Math.floor(diff / 86400000);
+                const hours = Math.floor(diff % 86400000 / 3600000);
+                const mins = Math.floor(diff % 3600000 / 60000);
+                const secs = Math.floor(diff % 60000 / 1000);
+                timer.textContent = `${String(days).padStart(2,'0')}д ${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+            }
+            update();
+            setInterval(update, 1000);
+        }
+
+    </script>
+</body>
+</html>
